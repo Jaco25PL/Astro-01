@@ -1,0 +1,41 @@
+---
+import { type APISpaceX } from "../types/api"
+
+const URL = "https://api.spacexdata.com/v5/launches/query"
+        const response = await fetch(URL ,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: {},
+                options: {
+                    sort: {
+                        date_unix: "asc",
+                    },
+                    limit: 12,
+                },
+            }),
+        })
+
+        const {docs: launches} = (await response.json()) as APISpaceX
+
+        console.log(launches)
+
+
+// const data = await response.json()
+// this a "type" of typescript , the result will be the same but it's more easy, secure, way to code with an API 
+
+
+
+---
+
+<div>
+    {
+        launches.map(launch => (
+            <h2>{launch.id}</h2>
+            <img src={launch.links.patch.small} alt={launch.id}>
+        ))
+    }
+</div>
+
