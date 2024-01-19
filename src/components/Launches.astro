@@ -1,41 +1,48 @@
 ---
 import { type APISpaceX } from "../types/api"
+import CardLaunch from "./CardLaunch.astro"
 
 const URL = "https://api.spacexdata.com/v5/launches/query"
-        const response = await fetch(URL ,{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+
+const response = await fetch(URL ,{
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        query: {},
+        options: {
+            sort: {
+                date_unix: "asc",
             },
-            body: JSON.stringify({
-                query: {},
-                options: {
-                    sort: {
-                        date_unix: "asc",
-                    },
-                    limit: 12,
-                },
-            }),
-        })
-
-        const {docs: launches} = (await response.json()) as APISpaceX
-
-        console.log(launches)
-
-
-// const data = await response.json()
-// this a "type" of typescript , the result will be the same but it's more easy, secure, way to code with an API 
-
+            limit: 12,
+        },
+    }),
+})   
+   
+const {docs: launches} = (await response.json()) as APISpaceX
 
 
 ---
 
 <div>
-    {
-        launches.map(launch => (
-            <h2>{launch.id}</h2>
-            <img src={launch.links.patch.small} alt={launch.id}>
-        ))
-    }
-</div>
+    <div class="mx-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {
+            launches.map(launch => (
+                <CardLaunch 
+                    id={launch.id}
+                    img={launch.links.patch.small}
+                    details={launch.details}
+                    success={launch.success}
+                    flightNumber={launch.flight_number}
 
+                />
+            ))
+        }
+    </div>
+    <div class="mb-10 mt-8 flex justify-center">
+        <button class="px-6 py-4 text-gray-300 bg-gray-800 hover:text-gray-50 hover:bg-gray-600 rounded-lg font-bold transition duration-300" type="button">
+            Load more
+        </button>
+    </div>
+</div>
