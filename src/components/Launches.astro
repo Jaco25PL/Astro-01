@@ -1,27 +1,8 @@
 ---
-import { type APISpaceX } from "../types/api"
 import CardLaunch from "./CardLaunch.astro"
+import {getLatestLaunches} from "../services/spacex"
 
-const URL = "https://api.spacexdata.com/v5/launches/query"
-
-const response = await fetch(URL ,{
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-        query: {},
-        options: {
-            sort: {
-                date_unix: "asc",
-            },
-            limit: 12,
-        },
-    }),
-})   
-   
-const {docs: launches} = (await response.json()) as APISpaceX
-
+const launches = await getLatestLaunches()
 
 ---
 
