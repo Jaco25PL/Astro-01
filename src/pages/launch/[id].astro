@@ -1,6 +1,60 @@
 ---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import { getLaunchesId } from "../../services/spacex";
+import { getLatestLaunches } from "../../services/spacex";
+
+// export const prerender = false
+
 const { id } = Astro.params
 
-console.log(id);
+
+let launch
+if (id){
+    launch = await getLaunchesId({id})
+}
+
+export async function getStaticPaths() {
+
+    const launchs = await getLatestLaunches()
+
+    return launchs.map(launch => ({
+        params: { id: launch.id }
+    }))
+ 
+}
 
 ---
+
+<Layout title=`Launch ${id}`>
+    <main class="bg-gradient-to-b from-gray-800 via-transparent to-transparent text-center flex justify-center pb-10 pt-5 max-w-xl mx-auto mb-10  rounded-xl px-5">
+        <div >
+            <h1 class="text-2xl text-center font-semibold mb-5 text-blue-200">
+                Launch ID: {launch?.id}
+            </h1>
+
+            <Image
+                src={launch?.links?.patch.large}
+                width={500}
+                height={500}
+                alt={launch?.id}
+                class="my-10 rounded-lg"
+                format='webp'
+            />
+
+            <div class="flex items-center justify-between px-10">
+                <span class=`px-3.5 py-2 rounded font-bold ${launch.success ? "bg-green-400 text-green-900" : "bg-red-400 text-red-900"}`>
+                    Mission
+                    {launch?.success ? "Success " : "False"}
+                </span>
+                <span class="font-bold">
+                    Flight Number: {launch.flight_number}
+                </span>
+            </div>
+
+            <div class="mt-10 text-lg text-slate-300 px-10 ">
+                {launch.details}
+            </div>
+        </div>
+    </main>
+</Layout>
