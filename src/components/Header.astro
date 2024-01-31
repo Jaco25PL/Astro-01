@@ -1,4 +1,5 @@
 ---
+import { Counter } from "./Counter";
 import NavButton from "./NavButton.astro";
 
 ---
@@ -8,6 +9,8 @@ import NavButton from "./NavButton.astro";
         <h1 class="mb-4 text-5xl tracking-tight font-extrabold text-white">SpaceX Launches 🚀</h1>
         <p class=" text-gray-400 sm:text-xl">All the information about the SpaceX launches</p>
     </div>
+    
+    <Counter client:visible transition:persist/>
 
     <nav class=" flex justify-between items-center w-full text-center md:flex-row flex-col">
         <NavButton body="Latest Launches" href="/">
@@ -23,4 +26,3 @@ import NavButton from "./NavButton.astro";
 
 
 </header>
-

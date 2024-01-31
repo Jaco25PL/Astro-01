@@ -1,5 +1,7 @@
 ---
-import { Image } from 'astro:assets'
+// import { Image } from 'astro:assets'
+import { LoadImg } from './LoadImg'
+
 
 interface Props {
     id: string
@@ -21,14 +23,17 @@ const successLaunch = success ? "Success" : "Failure"
 class=" rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:scale-105 hover:bg-gray-700 hover:border-gray-500 transition flex flex-col "> 
     <picture class="flex justify-center p-4 min-h-64 min-w-64">
         
-        <Image
+        
+        <!-- <Image
             src={img}
             width={256}
             height={256}
             alt={id}
             class="mb-5 rounded-lg"
             format='webp'
-        />
+        /> -->
+
+        <LoadImg client:load srcImage={img} altImage={id} />
 
     </picture>
 

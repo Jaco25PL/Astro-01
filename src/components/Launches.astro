@@ -2,28 +2,50 @@
 import CardLaunch from "./CardLaunch.astro"
 import {getLatestLaunches} from "../services/spacex"
 
-const launches = await getLatestLaunches()
 
+const launches = await getLatestLaunches()
 ---
 
 <div>
     <div class="mx-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {
-            launches.map(launch => (
+            launches.map(launch => (    
                 <CardLaunch 
                     id={launch.id}
                     img={launch.links.patch.small}
                     details={launch.details}
                     success={launch.success}
                     flightNumber={launch.flight_number}
-
-                />
+                    />
             ))
         }
+          
+        
     </div>
     <div class="mb-10 mt-8 flex justify-center">
-        <button class="px-6 py-4 text-gray-300 bg-gray-800 hover:text-gray-50 hover:bg-gray-600 rounded-lg font-bold transition duration-300" type="button">
-            Load more
-        </button>
+        <button 
+        class="px-6 py-4 text-gray-300 bg-gray-800 hover:text-gray-50 hover:bg-gray-600 rounded-lg font-bold transition duration-300" 
+        type="button"
+        >
+        Load more
+    </button>
     </div>
 </div>
+
+ <!-- 
+    const launches = await getLatestLaunches({url: "https://api.spacexdata.com/v5/launches/query"})
+    
+    launches.map(({id, links, details, success, flight_number}) => (    
+     <CardLaunch 
+         id={id}
+         img={links.patch.small}
+         details={details}
+         success={success}
+         flightNumber={flight_number}
+         />
+ )) 
+
+       
+         <LaunchesButton/>
+
+-->

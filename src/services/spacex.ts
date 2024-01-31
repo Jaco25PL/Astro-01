@@ -5,6 +5,8 @@ export const getLatestLaunches = async () => {
     try{
         const URL = "https://api.spacexdata.com/v5/launches/query"
 
+    // We have to make a post because of the query 
+
         const response = await fetch(URL ,{
             method: "POST",
             headers: {
@@ -15,22 +17,19 @@ export const getLatestLaunches = async () => {
                 options: {
                     sort: {
                         date_unix: "asc",
-                    },
-                    limit: 120,
+                    }, 
+                    limit: 21,
                 },
             }),
         })
-        
 
         if(!response.ok){
             throw new Error(`Failed to fetch data. Status: ${response.status}`)
         }
 
         const {docs: launches} = (await response.json()) as APISpaceX
-        console.log(launches);
         return launches
 
-        
     }catch(error){
         console.error(`Error fetching data:`, error)
         throw error
@@ -40,7 +39,7 @@ export const getLatestLaunches = async () => {
 // this for a more readable Code, separing the fetching in a ts or js file and
 // then importing the function in Launches.astro
 
-// ------
+// ------   
 
 // Now we fetch the id 
 export const getLaunchesId = async ({id}: {id: string}) => {

@@ -16,9 +16,9 @@ if (id){
 
 export async function getStaticPaths() {
 
-    const launchs = await getLatestLaunches()
+    const launches = await getLatestLaunches()
 
-    return launchs.map(launch => ({
+    return launches.map(launch => ({
         params: { id: launch.id }
     }))
  
